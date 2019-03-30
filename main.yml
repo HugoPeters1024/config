@@ -1,0 +1,24 @@
+---
+- hosts: local
+  become_method: sudo
+
+  roles:
+    - role: geerlingguy.docker
+      tags: ["setup"]
+      become: true
+
+  tasks:
+    - name: Install common
+      include_tasks: tasks/install_common.yml
+
+    - name: Setup bash 
+      include_tasks: tasks/bash.yml
+
+    - name: Install python
+      include_tasks: tasks/python.yml
+
+    - name: Install Vim
+      include_tasks: tasks/vim.yml
+
+
+

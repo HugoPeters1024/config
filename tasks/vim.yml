@@ -1,0 +1,40 @@
+---
+- name: Install vim
+  apt:
+    name: vim
+    state: latest
+  become: true
+
+- name: Copy .vimrc
+  copy:
+    src: files/.vimrc
+    dest: ~/.vimrc
+
+- name: Create vim autoload directories
+  file:
+    path: ~/.vim/autoload
+    recurse: yes
+
+- name: Create vim bundle directories
+  file:
+    path: ~/.vim/bundle
+    recurse: yes
+
+- name: install pathogen
+  get_url:
+    url: https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+    dest: ~/.vim/autoload/pathogen.vim
+
+- name: install emmet-vim
+  git:
+    repo: https://github.com/mattn/emmet-vim.git
+    dest: ~/.vim/bundle/emmet-vim
+
+- name: install nerdtree 
+  git:
+    repo: https://github.com/scrooloose/nerdtree.git
+    dest: ~/.vim/bundle/nerdtree
+
+
+ 
+
