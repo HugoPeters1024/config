@@ -18,5 +18,12 @@
     mode: 0600
   no_log: true
 
+- name: Add keys to agent
+  expect:
+    command: ssh-add
+    responses:
+      "Enter passphrase for /home/hugo/.ssh/id_rsa": "{{ ssh_pass }}"
+  no_log: false
+
 
 
