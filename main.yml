@@ -6,6 +6,14 @@
     - role: geerlingguy.docker
       tags: ["setup"]
       become: true
+      docker_service_state: started
+      docker_service_enabled: true
+      docker_restart_handler_state: restarted
+      docker_install_compose: true
+
+    - role: ocha.dotnet-core
+      dotnet_package: "dotnet-sdk-2.2"
+      become: true
 
   tasks:
     - name: Install common

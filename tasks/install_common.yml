@@ -10,6 +10,7 @@
     name:
       - git
       - chromium-browser
+      - dos2unix
   become: true
 
 - name: Set git email
@@ -17,3 +18,12 @@
 
 - name: Set git username 
   command: git config --global user.name "Hugo"
+
+- name: Create docker group
+  command: groupadd docker
+  become: true
+  ignore_errors: yes
+
+- name: Add user to the docker group
+  command: usermod -aG docker hugo
+  become: true
