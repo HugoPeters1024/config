@@ -22,6 +22,9 @@
     - name: Setup bash 
       include_tasks: tasks/bash.yml
 
+    - name: Setup ssh
+      include_tasks: tasks/ssh.yml
+
     - name: Install python
       include_tasks: tasks/python.yml
 

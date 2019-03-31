@@ -1,1 +1,1 @@
-ansible-playbook --ask-sudo-pass -i hosts.yml main.yml
+ansible-playbook --ask-sudo-pass -i hosts.yml --vault-password-file VAULT_SECRET main.yml

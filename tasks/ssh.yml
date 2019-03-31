@@ -1,0 +1,22 @@
+---
+- name: Ensure .ssh directory exists
+  file:
+    path: ~/.ssh
+    state: directory
+
+- name: Set ssh private key
+  copy:
+    content: "{{ ssh_private }}"
+    dest: ~/.ssh/id_rsa
+    mode: 0600
+  no_log: true
+
+- name: Set ssh public key
+  copy:
+    content: "{{ ssh_public }}"
+    dest: ~/.ssh/id_rsa.pub
+    mode: 0600
+  no_log: true
+
+
+
