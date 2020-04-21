@@ -141,3 +141,70 @@ else
  PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(parse_git_branch)\$ '
 fi
 unset color_prompt force_color_prompt
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+function dev() {
+  path=$(pwd);
+  devtraverse $path;
+}
+export -f dev
+
+function devtraverse() {
+  path=$1;
+  file="${path}/.dev";
+  echo "Looking for .dev in ${path}";
+  if ! [ $path == "/" ]; then
+    if [[ -x $file ]]; then
+      echo "executing ${file}"
+      cd $path;
+      sh $file;
+    else 
+      echo "fail, traversing parent."
+      npath=$(dirname $path);
+      devtraverse $npath;
+    fi
+  fi
+}
+export -f devtraverse
+
+function music() {
+  rfkill unblock bluetooth;
+  coproc myproc { bluetoothctl; }
+
+  while read -t 1 -u "${myproc[0]}" line; do
+    echo "$line"
+  done
+
+  echo "remove 1C:52:16:BB:77:95" >&"${myproc[1]}"
+
+  while read -t 1 -u "${myproc[0]}" line; do
+    echo "$line"
+  done
+
+  echo "scan on" >&"${myproc[1]}"
+
+  while read -t 5 -u "${myproc[0]}" line; do
+    echo $line;
+  done
+
+  echo "trust 1C:52:16:BB:77:95" >&"${myproc[1]}"
+  while read -t 2 -u "${myproc[0]}" line; do
+    echo $line;
+  done
+  sleep 4
+  echo "pair 1C:52:16:BB:77:95" >&"${myproc[1]}"
+
+  while read -t 4 -u "${myproc[0]}" line; do
+    echo $line;
+  done
+  echo "connect 1C:52:16:BB:77:95" >&"${myproc[1]}"
+
+  while read -t 2 -u "${myproc[0]}" line; do
+    echo $line;
+  done
+}
+export -f music
