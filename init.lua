@@ -46,6 +46,8 @@ require('packer').startup(function(use)
   use 'PhilRunninger/nerdtree-buffer-ops'
 
   use 'lambdalisue/suda.vim'
+
+  use 'github/copilot.vim'
 end)
 
 require'nvim-treesitter.configs'.setup {
@@ -149,6 +151,7 @@ require("fidget").setup{}
 
 local bufopts = { noremap=true, silent=true }
 vim.keymap.set('n', 'qf', vim.lsp.buf.code_action, bufopts)
+vim.keymap.set('n', 'qr', vim.lsp.buf.format, bufopts)
 
 local telescope = require('telescope.builtin')
 vim.keymap.set('n', 'ff', telescope.find_files, {})
