@@ -31,6 +31,8 @@ require('packer').startup(function(use)
   }
   use 'j-hui/fidget.nvim'
 
+  use 'tikhomirov/vim-glsl'
+
   use 'nvim-lua/plenary.nvim'
   use 'nvim-telescope/telescope.nvim'
   use 'nvim-treesitter/nvim-treesitter'
@@ -248,4 +250,8 @@ pcall(vim.cmd, 'colorscheme nordfox')
 vim.g.vimtex_compiler_latexmk = {
   options = {'-pdf', '-shell-escape', '-verbose', '-file-line-error', '-synctex=1', '-interaction=nonstopmode'}
 }
+
+vim.wo.foldmethod = 'expr'
+vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.wo.foldlevel = 99
 
