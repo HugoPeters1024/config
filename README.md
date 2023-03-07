@@ -7,4 +7,6 @@ deps:
 - rofi
 - maim
 - brightnessctl (likely needs a sudoers rule)
+- feh
+- flameshot
 
