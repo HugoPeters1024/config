@@ -4,20 +4,23 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
- 
+
 # ZSH_THEME="robbyrussell"
 ZSH_THEME="agnoster"
 
-PATH=/home/hugo/.ghcup/bin:$PATH
-PATH=/home/hugo/.cabal/bin:$PATH
+
+# PATH=/home/hugo/.ghcup/bin:$PATH
+# PATH=/home/hugo/.cabal/bin:$PATH
 #PATH=/home/hugo/repos/ghc/_build/stage1/bin:$PATH
 EDITOR=nvim
 
 PATH=/home/hugo/Downloads/ltex-ls-15.2.0/bin/:$PATH
+PATH=/home/hugo/.binx/nvim-linux64/bin/:$PATH
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -31,6 +34,7 @@ PATH=/home/hugo/Downloads/ltex-ls-15.2.0/bin/:$PATH
 # Uncomment the following line to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
+#
 
 # Uncomment one of the following lines to change the auto-update behavior
 # zstyle ':omz:update' mode disabled  # disable automatic updates
@@ -79,7 +83,7 @@ PATH=/home/hugo/Downloads/ltex-ls-15.2.0/bin/:$PATH
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git history-substring-search)
+plugins=(git history-substring-search ssh-agent fzf-zsh-plugin)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -112,3 +116,15 @@ source $ZSH/oh-my-zsh.sh
 alias vim=nvim
 alias nvim-config="nvim ~/.config/nvim/init.lua"
 alias goodnight="shutdown now"
+export EDITOR=nvim
+
+eval "$(direnv hook zsh)"
+
+alias with-cachix-key="vaultenv --secrets-file  <(echo \"cachix#signing-key\" ) -- "
+
+# [ -f "/home/hugo/.ghcup/env" ] && source "/home/hugo/.ghcup/env" # ghcup-env
+
+alias rg="rg --hidden --glob '!.git'"
+alias rofi-channabrowse="/home/hugo/rofi-channabrowse"
+alias htop=btm
+

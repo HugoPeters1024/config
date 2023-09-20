@@ -36,17 +36,21 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
+# Half the long press delay for a better vim scrolling experience
+exec_always --no-startup-id xset r rate 180 40
+
 # External monitor
-exec --no-startup-id xrandr --output HDMI-1-0 --left-of eDP
+# exec --no-startup-id xrandr --output  --left-of eDP
 
 # Set bakcground
-exec --no-startup-id feh --bg-scale ~/Desktop/bg.jpg
+exec_always --no-startup-id feh --bg-max ~/Desktop/bg.jpg
 
 # polybar
 # exec_always --no-startup-id $HOME/.config/polybar/launch.sh --material
 
 # Enable transparency
 # exec --no-startup-id xcompmgr -c -f -n
+exec --no-startup-id mpv --volume=10 ~/.clang.opus
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -78,6 +82,9 @@ bindsym $mod+o exec "rofi -modi drun,run -show drun"
 # brightness
 bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +3%
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 3%-
+
+
+bindsym $mod+BackSpace exec --no-startup-id i3lock -c 333344
 
 # change focus
 bindsym $mod+h focus left

@@ -7,6 +7,47 @@ require('packer').startup(function(use)
   use 'arcticicestudio/nord-vim'
   use 'EdenEast/nightfox.nvim'
 
+  -- Direnv
+  use 'direnv/direnv.vim'
+
+  -- Whitespace
+  use {
+    'johnfrankmorgan/whitespace.nvim',
+    config = function ()
+        require('whitespace-nvim').setup({
+            -- configuration options and their defaults
+
+            -- `highlight` configures which highlight is used to display
+            -- trailing whitespace
+            highlight = 'DiffDelete',
+
+            -- `ignored_filetypes` configures which filetypes to ignore when
+            -- displaying trailing whitespace
+            ignored_filetypes = { 'TelescopePrompt', 'Trouble', 'help' },
+        })
+
+        -- remove trailing whitespace with a keybinding
+        vim.keymap.set('n', 'tt', require('whitespace-nvim').trim)
+    end
+  }
+
+  -- Git blame
+  use 'f-person/git-blame.nvim'
+  use 'tpope/vim-fugitive'
+  use 'tpope/vim-rhubarb'
+
+  -- Git permalink
+  use {
+    'ruifm/gitlinker.nvim',
+    requires = 'nvim-lua/plenary.nvim',
+  }
+
+  -- Markdown
+  use({
+    "iamcco/markdown-preview.nvim",
+    run = function() vim.fn["mkdp#util#install"]() end,
+  })
+
   -- LSP
   use {
     'VonHeikemen/lsp-zero.nvim',
@@ -29,12 +70,33 @@ require('packer').startup(function(use)
 --      {'rafamadriz/friendly-snippets'},
     }
   }
-  use 'j-hui/fidget.nvim'
+
+  use {
+    "folke/trouble.nvim",
+    requires = "nvim-tree/nvim-web-devicons",
+    config = function()
+      require("trouble").setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    end
+  }
+  use {
+    'j-hui/fidget.nvim',
+    tag = 'legacy',
+    config = function()
+      require("fidget").setup {
+        -- options
+      }
+    end,
+  }
 
   use 'tikhomirov/vim-glsl'
 
   use 'nvim-lua/plenary.nvim'
   use 'nvim-telescope/telescope.nvim'
+  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
   use 'nvim-treesitter/nvim-treesitter'
   use 'akinsho/toggleterm.nvim'
   use 'lervag/vimtex'
@@ -51,6 +113,14 @@ require('packer').startup(function(use)
 
   use 'github/copilot.vim'
 end)
+
+require('mason').setup({
+  PATH = "append",
+})
+require("mason-lspconfig").setup {
+    ensure_installed = {},
+    automatic_installation = { exclude = { } },
+}
 
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"
@@ -99,7 +169,14 @@ end
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
+-- strip whitespaces on save
+vim.cmd('autocmd BufWritePre * lua require("whitespace-nvim").trim()')
+
 local lsp = require('lsp-zero')
+
+lsp.configure('hls', {
+  manageHLS = 'PATH'
+})
 
 vim.diagnostic.config({
   virtual_text = {
@@ -132,6 +209,17 @@ vim.g.copilot_filetypes = {
   ["*"] = true,
 }
 
+-- git blame
+vim.g.gitblame_enabled = 0
+
+local bufopts = { noremap=true, silent=true }
+vim.keymap.set('n', 'gb', ':GitBlameToggle<cr>', bufopts)
+
+-- git linker
+require"gitlinker".setup()
+
+
+
 local cmp = require('cmp')
 lsp.nvim_workspace()
 lsp.setup_nvim_cmp({
@@ -155,6 +243,7 @@ local bufopts = { noremap=true, silent=true }
 vim.keymap.set('n', 'qf', vim.lsp.buf.code_action, bufopts)
 vim.keymap.set('n', 'qr', vim.lsp.buf.format, bufopts)
 
+require('telescope').load_extension('fzf')
 local telescope = require('telescope.builtin')
 vim.keymap.set('n', 'ff', telescope.find_files, {})
 vim.keymap.set('n', 'fg', telescope.live_grep, {})
@@ -194,8 +283,8 @@ vim.keymap.set('n', '<C-q>', ':NERDTreeToggle<CR>', {noremap=true, silent=true})
 -- Persistent undo
 vim.api.nvim_exec([[
 if has('persistent_undo')
-  set undofile   
-  set undodir=$HOME/.vim/undo  
+  set undofile
+  set undodir=$HOME/.vim/undo
   endif
 ]], false)
 
