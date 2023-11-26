@@ -233,3 +233,6 @@ bar {
 
 # bindsym $mod+Print exec "maim --hidecursor --window=root | tee ~/Pictures/Screenshots/$(date -Iseconds).png | xclip -sel clipboard -t image/png"
 bindsym $mod+Print exec "flameshot gui"
+
+# Alt tab menu
+bindsym Mod1+Tab exec --no-startup-id rofi -modi combi -combi-modi window -show combi
