@@ -12,10 +12,13 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:Menlo 12
+font pango:JetBrains Mono 16
 
-# disable border
-for_window [class="^.*"] border pixel 0
+
+for_window [class="^.*"] border pixel 4
+for_window [floating] border pixel 5
+for_window [class=.*] exec ~/.config/i3/i3-autosplit.sh
+hide_edge_borders smart
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -45,12 +48,9 @@ exec_always --no-startup-id xset r rate 180 40
 # Set bakcground
 exec_always --no-startup-id feh --bg-max ~/Desktop/bg.jpg
 
-# polybar
-# exec_always --no-startup-id $HOME/.config/polybar/launch.sh --material
-
 # Enable transparency
 # exec --no-startup-id xcompmgr -c -f -n
-exec --no-startup-id mpv --volume=10 ~/.clang.opus
+exec --no-startup-id mpv --volume=20 ~/.clang.opus
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -173,6 +173,9 @@ bindsym $mod+Shift+8 move container to workspace number $ws8  ; workspace number
 bindsym $mod+Shift+9 move container to workspace number $ws9  ; workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10 ; workspace number $ws10
 
+# Swap workspaces between monitors
+bindsym $mod+Shift+s exec ~/.config/i3/swap_display.sh
+
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -217,15 +220,22 @@ client.urgent #383a3b #383a3b #ee0000 #383a3b #383a3b
 client.placeholder #000000 #0c0c0c #ffffff #000000 #0c0c0c
 client.background #ffffff
 
+
+# Trying some different colors
+client.focused              #688060 #688060 #303030 #ffcfaf
+client.focused_inactive     #3f3f3f #3F3F3F #7f9f7f #3f3f3f
+client.unfocused            #3f3f3f #3F3F3F #DCDCCC #3f3f3f
+client.urgent               #dca3a3 #dca3a3 #DCDCCC #3f3f3f
+
 bar {
-  colors {
-    background #2d2d2d
-    statusline #dedede
-    separator #888888
-    focused_workspace #d64937 #d64937 #dedede
-    active_workspace #2d2d2d #5f676a #dedede
-    inactive_workspace #2d2d2d #2d2d2d #888888
-    urgent_workspace #333333 #900000 #ffffff
+    colors {
+      background #3f3f3f
+      statusline #dcdccc
+
+      focused_workspace  #93b3a3 #3f3f3f #93b3a3
+      active_workspace   #ffcfaf #3f3f3f #ffcfaf
+      inactive_workspace #636363 #3f3f3f #dcdccc
+      urgent_workspace   #dca3a3 #3f3f3f #dca3a3
   }
   mode hide
   status_command i3status

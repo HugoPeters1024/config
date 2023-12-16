@@ -6,6 +6,8 @@ require('packer').startup(function(use)
   use 'morhetz/gruvbox'
   use 'arcticicestudio/nord-vim'
   use 'EdenEast/nightfox.nvim'
+  use "romainl/Apprentice"
+  use "folke/tokyonight.nvim"
 
   -- Direnv
   use 'direnv/direnv.vim'
@@ -41,6 +43,9 @@ require('packer').startup(function(use)
     'ruifm/gitlinker.nvim',
     requires = 'nvim-lua/plenary.nvim',
   }
+
+  -- Git diffs
+  use "sindrets/diffview.nvim"
 
   -- Markdown
   use({
@@ -118,7 +123,7 @@ require('mason').setup({
   PATH = "append",
 })
 require("mason-lspconfig").setup {
-    ensure_installed = {},
+    ensure_installed = { "pylsp" },
     automatic_installation = { exclude = { } },
 }
 
@@ -248,6 +253,7 @@ local telescope = require('telescope.builtin')
 vim.keymap.set('n', 'ff', telescope.find_files, {})
 vim.keymap.set('n', 'fg', telescope.live_grep, {})
 vim.keymap.set('n', 'fe', telescope.diagnostics, {})
+vim.keymap.set('n', 'fd', telescope.commands, {})
 
 
 -- shift+R to reload config
@@ -288,35 +294,7 @@ if has('persistent_undo')
   endif
 ]], false)
 
--- Run command
---vim.api.nvim_exec([[
---au BufReadPost,BufNewFile *.rs let b:runcommand = "! cargo run"
---]], false)
---vim.keymap.set('n', '<F1>', ': b:runcommand<CR>', {noremap=true, silent=true})
-
-if vim.fn.has "nvim-0.7" then
-  vim.api.nvim_create_autocmd("FileType", {
-    pattern = "*",
-    callback = function()
-      vim.schedule(CodeRunner)
-    end,
-  })
-else
-  vim.cmd "autocmd FileType * lua CodeRunner()"
-end
-
-function CodeRunner()
-  local bufnr = vim.api.nvim_get_current_buf()
-  local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
-  local fname = vim.fn.expand "%:p:t"
-
-  if ft == "rust" then
-    vim.keymap.set('n', '<F1>', ':TermExec cmd="cargo run"<CR>', {noremap=true, silent=true})
-  else
-    vim.keymap.set('n', '<F1>', ':TermExec cmd="./vimrun.sh"<CR>', {noremap=true, silent=true})
-  end
-end
-
+vim.keymap.set('n', '<F1>', ':NERDTreeToggle<CR>', {noremap=true, silent=true})
 
 -- Basic settings
 vim.opt.cursorline = true
