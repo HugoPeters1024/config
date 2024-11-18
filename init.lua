@@ -12,6 +12,9 @@ require('packer').startup(function(use)
   -- Direnv
   use 'direnv/direnv.vim'
 
+  use 'tidalcycles/vim-tidal'
+
+
   -- Whitespace
   use {
     'johnfrankmorgan/whitespace.nvim',
@@ -321,4 +324,16 @@ vim.g.vimtex_compiler_latexmk = {
 vim.wo.foldmethod = 'expr'
 vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.wo.foldlevel = 99
+
+-- Tidal group
+vim.api.nvim_exec("let g:tidal_no_mappings = 1", false)
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = 'tidal',
+	group = vim.api.nvim_create_augroup('tidalcycles_only_keymap', { clear = true }),
+	callback = function ()
+    vim.keymap.set('n', '<S-k>', ":TidalSend<CR>", opts)
+    vim.keymap.set('v', '<S-k>', ":TidalSend<CR>", opts)
+    vim.keymap.set('n', '<S-o>', ":TidalHush<CR>", opts)
+	end,
+})
 
