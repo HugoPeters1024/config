@@ -8,6 +8,9 @@
 # i3 config file (v4)
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
+exec /home/hugo/repos/sway-systemd/src/session.sh
+exec /home/hugo/repos/sway-systemd/src/assign-cgroups.py
+
 set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -37,7 +40,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
-exec --no-startup-id nm-applet
+exec --no-startup-id nm-connection-editor
 
 # Half the long press delay for a better vim scrolling experience
 input type:keyboard {
@@ -45,8 +48,8 @@ input type:keyboard {
     repeat_rate 40
 }
 
-# Set bakcground
-output * bg ~/Desktop//bg.png fill
+# Set background
+output * bg ~/Desktop/bg.png fill
 
 # Enable transparency
 # exec --no-startup-id xcompmgr -c -f -n
@@ -66,7 +69,7 @@ floating_modifier $mod
 bindsym $mod+Tab workspace back_and_forth
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -84,7 +87,7 @@ bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +3%
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 3%-
 
 
-bindsym $mod+BackSpace exec --no-startup-id i3lock -c 333344
+bindsym $mod+BackSpace exec --no-startup-id swaylock -c 333344
 
 # Make the currently focused window a scratchpad
 bindsym $mod+Shift+minus move scratchpad
@@ -233,22 +236,33 @@ client.focused_inactive     #3f3f3f #3F3F3F #7f9f7f #3f3f3f
 client.unfocused            #3f3f3f #3F3F3F #DCDCCC #3f3f3f
 client.urgent               #dca3a3 #dca3a3 #DCDCCC #3f3f3f
 
-bar {
-    colors {
-      background #3f3f3f
-      statusline #dcdccc
+# RIP i3 bar
+# bar {
+#     colors {
+#       background #3f3f3f
+#       statusline #dcdccc
+#
+#       focused_workspace  #93b3a3 #3f3f3f #93b3a3
+#       active_workspace   #ffcfaf #3f3f3f #ffcfaf
+#       inactive_workspace #636363 #3f3f3f #dcdccc
+#       urgent_workspace   #dca3a3 #3f3f3f #dca3a3
+#   }
+#   mode hide
+#   status_command i3status
+# }
 
-      focused_workspace  #93b3a3 #3f3f3f #93b3a3
-      active_workspace   #ffcfaf #3f3f3f #ffcfaf
-      inactive_workspace #636363 #3f3f3f #dcdccc
-      urgent_workspace   #dca3a3 #3f3f3f #dca3a3
-  }
-  mode hide
-  status_command i3status
+bar {
+    swaybar_command waybar
+    position bottom
+    hidden_state hide
+    mode hide
+    modifier Mod4
 }
 
 # bindsym $mod+Print exec "maim --hidecursor --window=root | tee ~/Pictures/Screenshots/$(date -Iseconds).png | xclip -sel clipboard -t image/png"
-bindsym $mod+Print exec "flameshot gui"
+
+# compiled flameshot with -DUSE_WAYLAND_GRIM
+bindsym $mod+Print exec "/home/hugo/repos/flameshot/build/src/flameshot gui"
 
 # Alt tab menu
 bindsym Mod1+Tab exec --no-startup-id rofi -modi combi -combi-modi window -show combi
